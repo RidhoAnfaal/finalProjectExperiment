@@ -1,0 +1,72 @@
+{
+  "n_samples": 153,
+  "n_labels": 9,
+  "zero_label_articles": 0,
+  "label_cardinality": 2.9542,
+  "label_density": 0.3282,
+  "unique_labelsets": 91,
+  "multiplicity_distribution": {
+    "1": 15,
+    "2": 41,
+    "3": 50,
+    "4": 32,
+    "5": 14,
+    "7": 1
+  },
+  "per_label_statistics": {
+    "label_energy": {
+      "no": 1,
+      "official_name": "Energy",
+      "count": 55,
+      "percentage": 35.95
+    },
+    "label_waste_treatment": {
+      "no": 2,
+      "official_name": "Waste treatment",
+      "count": 44,
+      "percentage": 28.76
+    },
+    "label_unit_operation": {
+      "no": 3,
+      "official_name": "Unit operation",
+      "count": 64,
+      "percentage": 41.83
+    },
+    "label_thermodynamic": {
+      "no": 4,
+      "official_name": "Thermodynamic",
+      "count": 21,
+      "percentage": 13.73
+    },
+    "label_process_simulation": {
+      "no": 5,
+      "official_name": "Process simulation",
+      "count": 26,
+      "percentage": 16.99
+    },
+    "label_new_material": {
+      "no": 6,
+      "official_name": "Development and application of new material",
+      "count": 59,
+      "percentage": 38.56
+    },
+    "label_chemical_reaction": {
+      "no": 7,
+      "official_name": "Chemical engineering reaction",
+      "count": 56,
+      "percentage": 36.6
+    },
+    "label_biochemical": {
+      "no": 8,
+      "official_name": "Biochemical",
+      "count": 44,
+      "percentage": 28.76
+    },
+    "label_biomass": {
+      "no": 9,
+      "official_name": "Biomass",
+      "count": 83,
+      "percentage": 54.25
+    }
+  }
+}

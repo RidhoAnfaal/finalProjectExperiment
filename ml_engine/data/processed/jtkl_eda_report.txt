@@ -1,0 +1,75 @@
+====================================================================================================
+LAPORAN HASIL ANOTASI MULTI-LABEL & EDA - JURNAL TEKNIK KIMIA DAN LINGKUNGAN (JTKL)
+====================================================================================================
+Total Artikel Input           : 153 artikel (jtkl_articles_archive.csv)
+Artikel Tanpa Label (0 label) : 0 artikel
+
+--- 1. DISTRIBUSI KE-9 LABEL RESMI AIM AND SCOPE JTKL ---
+No | Kolom Label                | Nama Aim & Scope Resmi                       | Jumlah | Persentase
+----------------------------------------------------------------------------------------------------
+ 1 | label_energy               | Energy                                       |     55 |      35.9%
+ 2 | label_waste_treatment      | Waste treatment                              |     44 |      28.8%
+ 3 | label_unit_operation       | Unit operation                               |     64 |      41.8%
+ 4 | label_thermodynamic        | Thermodynamic                                |     21 |      13.7%
+ 5 | label_process_simulation   | Process simulation                           |     26 |      17.0%
+ 6 | label_new_material         | Development and application of new material  |     59 |      38.6%
+ 7 | label_chemical_reaction    | Chemical engineering reaction                |     56 |      36.6%
+ 8 | label_biochemical          | Biochemical                                  |     44 |      28.8%
+ 9 | label_biomass              | Biomass                                      |     83 |      54.2%
+----------------------------------------------------------------------------------------------------
+
+--- 2. DISTRIBUSI JUMLAH LABEL PER ARTIKEL (MULTIPLICITY) ---
+  - 1 Label sekaligus :  15 artikel (  9.8%)
+  - 2 Label sekaligus :  41 artikel ( 26.8%)
+  - 3 Label sekaligus :  50 artikel ( 32.7%)
+  - 4 Label sekaligus :  32 artikel ( 20.9%)
+  - 5 Label sekaligus :  14 artikel (  9.2%)
+  - 7 Label sekaligus :   1 artikel (  0.7%)
+
+--- 3. METRIK KOMPLEKSITAS DATASET MULTI-LABEL ---
+  * Jumlah Dokumen (N)       : 153
+  * Jumlah Kelas Label (L)   : 9
+  * Label Cardinality (LC)   : 2.954 (rata-rata topik per artikel)
+  * Label Density (LD)       : 0.328 (32.8%)
+  * Unique Labelsets         : 91 kombinasi unik
+
+--- 4. CONTOH 10 ARTIKEL PERTAMA BESERTA HASIL PELABELAN MULTI-HOT ---
+[01] (ID: 9861) Sustainable Biohydrogen Production from Animal Manure: Review into Processes Optimization, Pretreatment Strategies, and Feedstocks Evaluation
+     Keywords : animal manure; biohydrogen production; co-digestion; sustainable bioenergy
+     Labels (4): Energy; Waste treatment; Biochemical; Biomass
+
+[02] (ID: 10009) Comparative Gasification Performance of Cassava Stems, Bagasse, and Sengon Sawdust
+     Keywords : biomass gasification; gasification performance; lignocellulosic biomass; syngas production; thermochemical conversion
+     Labels (3): Energy; Chemical engineering reaction; Biomass
+
+[03] (ID: 10560) Valorization of Coffee Husk Waste into a Sulfonated Activated Carbon Catalyst for Enhanced Glycerol Acetylation toward Triacetin Production
+     Keywords : activated carbon; coffee husk; glycerol acetylation; sulfonated carbon; triacetin
+     Labels (3): Development and application of new material; Chemical engineering reaction; Biomass
+
+[04] (ID: 10465) Techno-Environmental Assessment of Basil Essential Oil Extraction Using Hydrodistillation, Microwave-Assisted Extraction, and Ultrasound-Microwave-Assisted Extraction
+     Keywords : basil essential oil; CO2 emission; microwave-assisted extraction; specific electricity consumption; ultrasound-microwave-assisted extraction
+     Labels (4): Waste treatment; Unit operation; Biochemical; Biomass
+
+[05] (ID: 11240) Optimization of Tobacco-Stem Bio-Oil Production by Catalytic Pyrolysis Using Activated Natural Zeolite and Response Surface Methodology
+     Keywords : bio-oil; catalytic pyrolysis; natural zeolite; response surface methodology; tobacco stem
+     Labels (5): Energy; Process simulation; Development and application of new material; Chemical engineering reaction; Biomass
+
+[06] (ID: 9997) Synthesis and Characterization of Water Hyacinth Stem (Eichhornia crassipes) Cellulose-Based Degradable Plastic Incorporated with Poly(lactic acid)
+     Keywords : biodegradability; degradable plastic; mechanical properties; poly(lactic acid); water hyacinth cellulose
+     Labels (3): Thermodynamic; Development and application of new material; Biomass
+
+[07] (ID: 9249) The Influence of Plastic Waste Types and Ratios on the Characteristics of Alternative Fuels through the Pyrolysis Method
+     Keywords : alternative energy; biomass; liquid fuel; plastic waste; pyrolysis
+     Labels (5): Energy; Waste treatment; Thermodynamic; Chemical engineering reaction; Biomass
+
+[08] (ID: 9341) Delignification of Kelakai (Stenochlaena palustris) Using Sodium Hydroxide Solution: Implications on Thermal Decomposition and Kinetic Parameters
+     Keywords : activation energy; kelakai; kinetic; NaOH solution treatment; thermal stability
+     Labels (4): Energy; Thermodynamic; Chemical engineering reaction; Biomass
+
+[09] (ID: 9227) Enhanced Removal of Copper from Synthetic Wastewater Using a Water Hyacinth-Based Activated Carbon and Chitosan Composite Adsorbent
+     Keywords : adsorption; chitosan; composite; Cu removal; water hyacinth
+     Labels (7): Waste treatment; Unit operation; Thermodynamic; Process simulation; Development and application of new material; Chemical engineering reaction; Biomass
+
+[10] (ID: 10225) A Study of the Effect of Additive Concentration in B40 Biodiesel on the Performance of the Air Preheater in a Steam-Powered Electric Power Plant
+     Keywords : 2-ethylhexyl nitrate; additive; air preheater; B40 biodiesel; coal-fired power plant; combustion emissions; particles
+     Labels (3): Energy; Thermodynamic; Chemical engineering reaction

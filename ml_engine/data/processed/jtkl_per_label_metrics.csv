@@ -1,0 +1,10 @@
+﻿label_column,aim_and_scope,support,f1_baseline_nb,f1_tfidf_svm,precision_proposed,recall_proposed,f1_proposed_fasttext_svm
+label_energy,1. Energy,55,0.6889,0.7579,0.7931,0.8364,0.8142
+label_waste_treatment,2. Waste treatment,44,0.7013,0.75,0.7292,0.7955,0.7609
+label_unit_operation,3. Unit operation,64,0.735,0.8033,0.7647,0.8125,0.7879
+label_thermodynamic,4. Thermodynamic,21,0.0909,0.6061,0.5455,0.5714,0.5581
+label_process_simulation,5. Process simulation,26,0.2581,0.4118,0.8,0.6154,0.6957
+label_new_material,6. Development and application of new material,59,0.75,0.7619,0.7963,0.7288,0.7611
+label_chemical_reaction,7. Chemical engineering reaction,56,0.6882,0.74,0.7119,0.75,0.7304
+label_biochemical,8. Biochemical,44,0.5,0.6,0.871,0.6136,0.72
+label_biomass,9. Biomass,83,0.8111,0.7861,0.7444,0.8072,0.7746

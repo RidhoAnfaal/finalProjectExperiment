@@ -1,0 +1,48 @@
+============================================================================================================
+LAPORAN HASIL EKSPERIMEN MODEL MULTI-LABEL TEXT CLASSIFICATION (FASTTEXT + SVM)
+Studi Kasus: Jurnal Teknik Kimia dan Lingkungan (JTKL) - Politeknik Negeri Malang (N = 153, L = 9)
+============================================================================================================
+
+--- 1. TABEL KOMPARASI SKENARIO EKSPERIMEN (5-FOLD CROSS-VALIDATION) ---
+ID Skenario                  | Model & Konfigurasi                            |  Macro-F1 | Weight-F1 |  Micro-F1 |  Hamming
+------------------------------------------------------------------------------------------------------------
+Exp-1 (Baseline Terdahulu)   | TF-IDF + Naive Bayes (No-Stem)                 |    58.04% |    65.60% |    68.48% |   0.1772
+Exp-2 (Baseline SVM)         | TF-IDF + SVM Linear (No-Stem, Default)         |    60.52% |    66.89% |    69.02% |   0.1721
+Exp-3 (Baseline SVM Balanced) | TF-IDF + SVM Linear (No-Stem, Balanced)        |    69.08% |    72.47% |    73.40% |   0.1569
+Exp-4 (Proposed - With Stem) | FastText Subword + SVM (With Stemming Sastrawi) |    73.04% |    74.91% |    75.08% |   0.1634
+Exp-5 (Proposed - No Stem)   | FastText Subword + SVM (Tanpa Stemming)        |    72.82% |    74.82% |    75.11% |   0.1641
+Exp-6 (Proposed + RBF Kernel) | FastText Subword + SVM RBF (Tanpa Stemming)    |    69.98% |    73.71% |    74.64% |   0.1554
+Exp-7 (Proposed Optimal Tuned) | FastText Subword + SVM Tuned (C=0.6 + Threshold) |    73.36% |    75.28% |    75.39% |   0.1612
+------------------------------------------------------------------------------------------------------------
+* Model Terbaik: Exp-7 (Proposed Optimal Tuned) - FastText Subword + SVM Tuned (C=0.6 + Threshold) (Macro-F1 = 73.36%, Hamming Loss = 0.1612)
+
+--- 2. PERFORMA PER LABEL AIM AND SCOPE JTKL (MODEL TERBAIK VS BASELINE) ---
+Nama Resmi Aim and Scope JTKL                 | Support |    F1 NB |  F1 TFIDF |     Prec |   Recall | F1 FastText+SVM
+------------------------------------------------------------------------------------------------------------
+1. Energy                                     |      55 |   68.89% |    75.79% |   79.31% |   83.64% |          81.42%
+2. Waste treatment                            |      44 |   70.13% |    75.00% |   72.92% |   79.55% |          76.09%
+3. Unit operation                             |      64 |   73.50% |    80.33% |   76.47% |   81.25% |          78.79%
+4. Thermodynamic                              |      21 |    9.09% |    60.61% |   54.55% |   57.14% |          55.81%
+5. Process simulation                         |      26 |   25.81% |    41.18% |   80.00% |   61.54% |          69.57%
+6. Development and application of new material |      59 |   75.00% |    76.19% |   79.63% |   72.88% |          76.11%
+7. Chemical engineering reaction              |      56 |   68.82% |    74.00% |   71.19% |   75.00% |          73.04%
+8. Biochemical                                |      44 |   50.00% |    60.00% |   87.10% |   61.36% |          72.00%
+9. Biomass                                    |      83 |   81.11% |    78.61% |   74.44% |   80.72% |          77.46%
+------------------------------------------------------------------------------------------------------------
+
+--- 3. BUKTI EFEKTIVITAS FASTTEXT SUBWORD N-GRAMS PADA ISTILAH BILINGUAL / OOV ---
+Kemiripan kosinus (Cosine Similarity) antar kata serapan Indonesia-Inggris & variasi morfologi
+yang pada TF-IDF konvensional bernilai 0.0000 (dianggap dua kata asing yang tidak berhubungan):
+  - Kemiripan Subword 'adsorpsi      ' <-> 'adsorption    ' : 0.6286
+  - Kemiripan Subword 'pirolisis     ' <-> 'pyrolysis     ' : 0.2139
+  - Kemiripan Subword 'bioetanol     ' <-> 'bioethanol    ' : 0.6343
+  - Kemiripan Subword 'katalisator   ' <-> 'catalyst      ' : 0.3286
+  - Kemiripan Subword 'fermentasi    ' <-> 'fermentation  ' : 0.7260
+  - Kemiripan Subword 'termodinamika ' <-> 'thermodynamic ' : 0.4738
+
+--- 4. LOKASI FILE ARTEFAK HASIL EKSPERIMEN ---
+  * Laporan Teks Lengkap : D:\Skripsi_Polinema\ml_engine\data\processed\jtkl_experiment_report.txt
+  * Tabel Komparasi CSV  : D:\Skripsi_Polinema\ml_engine\data\processed\jtkl_experiment_results.csv
+  * Tabel Per-Label CSV  : D:\Skripsi_Polinema\ml_engine\data\processed\jtkl_per_label_metrics.csv
+  * Model Terlatih (.job): D:\Skripsi_Polinema\ml_engine\models\jtkl_fasttext_svm_bundle.joblib
+============================================================================================================

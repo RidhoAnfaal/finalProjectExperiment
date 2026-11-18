@@ -1,0 +1,8 @@
+﻿scenario_id,model_name,preprocessing,macro_f1,weighted_f1,micro_f1,macro_precision,macro_recall,hamming_loss,std_fold_macro_f1
+Exp-1 (Baseline Terdahulu),TF-IDF + Naive Bayes (No-Stem),Tanpa Stemming,0.5804,0.656,0.6848,0.8596,0.5004,0.1772,0.0476
+Exp-2 (Baseline SVM),"TF-IDF + SVM Linear (No-Stem, Default)",Tanpa Stemming,0.6052,0.6689,0.6902,0.8815,0.508,0.1721,0.0228
+Exp-3 (Baseline SVM Balanced),"TF-IDF + SVM Linear (No-Stem, Balanced)",Tanpa Stemming,0.6908,0.7247,0.734,0.84,0.6092,0.1569,0.0332
+Exp-4 (Proposed - With Stem),FastText Subword + SVM (With Stemming Sastrawi),Dengan Stemming,0.7304,0.7491,0.7508,0.7505,0.7204,0.1634,0.029
+Exp-5 (Proposed - No Stem),FastText Subword + SVM (Tanpa Stemming),Tanpa Stemming,0.7282,0.7482,0.7511,0.7452,0.7233,0.1641,0.0322
+Exp-6 (Proposed + RBF Kernel),FastText Subword + SVM RBF (Tanpa Stemming),Tanpa Stemming,0.6998,0.7371,0.7464,0.8251,0.6398,0.1554,0.0361
+Exp-7 (Proposed Optimal Tuned),FastText Subword + SVM Tuned (C=0.6 + Threshold),Dengan Stemming,0.7336,0.7528,0.7539,0.7507,0.7256,0.1612,0.039
