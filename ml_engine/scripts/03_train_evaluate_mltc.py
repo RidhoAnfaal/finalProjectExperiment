@@ -43,7 +43,7 @@ def clean_text(text:str) -> str :
     tokens = re.findall(r"[a-z]{3,}", text)
     filtered = [w for w in tokens if w not in STOPWORDS]
     return " ".join(filtered)
-    
+
 df_labeled["raw_text"] = df_labeled["title"] + " " + df_labeled["title"] + " " + df_labeled["keywords"] + " " + df_labeled["keywords"] + " " + df_labeled["abstract"] 
 df_labeled["clean_no_stem"] = df_labeled["raw_text"].apply(clean_text)
 # comparision between unclean and cleaned data (lower case, del num, del stopwords)
@@ -57,3 +57,17 @@ df_labeled['clean_with_stem'] = df_labeled['clean_no_stem'].apply(lambda txt: ' 
 # comparision between unstemmed & stemmed data ()
 print("\n[CONTOH ID TANPA STEM ]:", df_labeled["clean_no_stem"].iloc[68][:110])
 print("[CONTOH ID DENGAN STEM]:", df_labeled["clean_with_stem"].iloc[68][:110])
+
+
+#########################################################
+# 4 MODEL TRAINING FASTTEXT & SVM
+#########################################################
+
+# Fasttext Words Splitter
+def extract_subwords(text: str, min_n: int = 3, max_n: int = 6) -> list[str]:
+    subwords = []
+    for w in text.split():
+        b = f"<{w}>"
+        subwords.extend([b] + [b[i:i+n] for n in range(min_n, min(max_n+1, len(b)+1)) for i in range(len(b)-n+1)])
+        return subwords
+print("\nTest Subword 'adsorpsi':", extract_subwords("adsorpsi")[:12])
