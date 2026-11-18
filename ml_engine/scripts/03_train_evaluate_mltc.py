@@ -71,3 +71,4 @@ def extract_subwords(text: str, min_n: int = 3, max_n: int = 6) -> list[str]:
         subwords.extend([b] + [b[i:i+n] for n in range(min_n, min(max_n+1, len(b)+1)) for i in range(len(b)-n+1)])
         return subwords
 print("\nTest Subword 'adsorpsi':", extract_subwords("adsorpsi")[:12])
+#
