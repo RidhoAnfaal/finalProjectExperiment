@@ -1,6 +1,9 @@
 #OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 # 2 DATA EXPLORATORY ANALYSIS (EDA) / CHECK GROUND TRUTH 
 #OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+from matplotlib.collections import PathCollection
+from typing import Callable
+from matplotlib.lines import lineStyles
 from pathlib import Path
 import pandas as pd
 
@@ -22,9 +25,18 @@ df_labeled = pd.read_csv(LABELED_CSV_PATH)
 
 # Cek persebaran class 
 LABEL_COLS = [col for col in df_labeled.columns if col.startswith("label_") and col != "label_count"]
-print("\nSebaran Jumlah Artikel per Label (Aim & Scope JTKL):\n")
+print("\nSebaran Jumlah Artikel per Label (Aim & Scope JTKL):")
 print(df_labeled[LABEL_COLS].sum())
 print(f"\nAverage Label per Artikel : {df_labeled[LABEL_COLS].sum(axis=1).mean():.2f}")
+
+# visualisasi persebaran
+import matplotlib.pyplot as plt
+
+label_counts = df_labeled[LABEL_COLS].sum().sort_values()
+plt.figure(figsize=(9, 5)); plt.grid(True, linestyle="--", alpha=0.5)
+sc = plt.scatter(label_counts.values, label_counts.index, s=label_counts.values*12, c=label_counts.values, cmap="viridis", edgecolors="k", zorder=3)
+for x, y in zip(label_counts.values, label_counts.index): plt.text(x + 1.5, y, f"{x} artikel", va="center", fontsize=9)
+plt.xlim(0, 100); plt.colorbar(sc, label="Jumlah Artikel"); plt.xlabel("Jumlah Artikel"); plt.title("Sebaran Jumlah Artikel per Label (Aim & Scope JTKL)"); plt.tight_layout(); plt.savefig(PROJECT_ROOT / "data" / "processed" / "chart_00_eda_scatter.png", dpi=150); plt.close()
 
 #OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 # 3 DATA PREPROCESSING 
@@ -53,6 +65,7 @@ print("[After Cleaning]:", df_labeled["clean_no_stem"].iloc[0][:120])
 
 # Stemming Sastrawi VS Non Stemming
 import json
+
 STEM_CACHE = json.loads((PROJECT_ROOT / 'data' / "processed" / "sastrawi_stem_cache.json").read_text(encoding="utf-8"))
 df_labeled['clean_with_stem'] = df_labeled['clean_no_stem'].apply(lambda txt: ' '.join(STEM_CACHE.get(w, w) for w in txt.split()))
 # comparision between unstemmed & stemmed data ()
@@ -74,27 +87,13 @@ plt.savefig(PROJECT_ROOT / "data" / "processed" / "chart_01_top_words.png", dpi=
 # 4 MODEL TRAINING FASTTEXT & SVM
 #OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
-# Fasttext Words Splitter
-def extract_subwords(text: str, min_n: int = 3, max_n: int = 6) -> list[str]:
-    subwords = []
-    for w in text.split():
-        b = f"<{w}>"
-        subwords.extend([b] + [b[i:i+n] for n in range(min_n, min(max_n+1, len(b)+1)) for i in range(len(b)-n+1)])
-    return subwords
-# test extract subwords
-print("\nTest Subword : ", extract_subwords("computer vision and image processing"))
-
-# Function vector fasttext
-import numpy as np 
+# Function hybrid vectorizer
+import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.decomposition import TruncatedSVD
-from sklearn.preprocessing import Normalizer
+from sklearn.pipeline import FeatureUnion
 
-def build_fasttext_vectors(train_docs, val_docs, dim: int = 100):
-    sub_vec = TfidfVectorizer(analyzer=extract_subwords, sublinear_tf=True, min_df=2, max_features=12000)
-    X_tr_sub, X_va_sub = sub_vec.fit_transform(train_docs), sub_vec.transform(val_docs)
-    svd, norm = TruncatedSVD(n_components=dim, random_state=42), Normalizer()
-    return np.hstack([norm.fit_transform(svd.fit_transform(X_tr_sub)), X_tr_sub.toarray()]), np.hstack([norm.transform(svd.transform(X_va_sub)), X_va_sub.toarray()])
+def make_hybrid_vectorizer():
+    return FeatureUnion([("word", TfidfVectorizer(analyzer="word", ngram_range=(1, 2), sublinear_tf=True, min_df=2, max_features=5000)), ("char", TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5), sublinear_tf=True, min_df=2, max_features=10000))]) 
 
 # 5 fold cross validation & SVM
 from sklearn.model_selection import KFold
@@ -108,9 +107,10 @@ oof_preds = np.zeros_like(Y)
 corpus = df_labeled['clean_with_stem'].tolist()
 kf = KFold(n_splits=5, shuffle=True, random_state=42)
 for train_idx, val_idx in kf.split(corpus):
-    X_tr, X_va = build_fasttext_vectors([corpus[i] for i in train_idx], [corpus[i] for i in val_idx])
-    oof_preds[val_idx] = OneVsRestClassifier(LinearSVC(C=0.6, class_weight='balanced', random_state=42)).fit(X_tr, Y[train_idx]).predict(X_va)
-
+    vec = make_hybrid_vectorizer()
+    X_tr, X_va = vec.fit_transform([corpus[i] for i in train_idx]), vec.transform([corpus[i] for i in val_idx])    
+    oof_preds[val_idx] = (OneVsRestClassifier(LinearSVC(C=0.6, class_weight="balanced", random_state=42)).fit(X_tr, Y[train_idx]).decision_function(X_va) >= -0.15).astype(int)
+    
 #OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 # 5 MODEL EVALUATION 
 #OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
@@ -124,12 +124,27 @@ print(f"Hamming Loss      : {hamming_loss(Y, oof_preds):.4f}")
 print('\nDetail Performance per Label Aim & Scope:')
 print(classification_report(Y, oof_preds, target_names=LABEL_COLS, zero_division=0))
 
+# Visualisasi SVM Decision Boundary & Margin (Studi Kasus Label 1: Energy vs Non-Energy)
+from sklearn.decomposition import TruncatedSVD
+X_all = make_hybrid_vectorizer().fit_transform(corpus); y_energy = Y[:, 0]
+X_2d = np.column_stack([LinearSVC(C=0.6, class_weight="balanced", random_state=42).fit(X_all, y_energy).decision_function(X_all), TruncatedSVD(n_components=2, random_state=42).fit_transform(X_all)[:, 1] * 3])
+
+xx, yy = np.meshgrid(np.linspace(X_2d[:,0].min()-0.3, X_2d[:,0].max()+0.3, 200), np.linspace(X_2d[:,1].min()-0.3, X_2d[:,1].max()+0.3, 200))
+Z = xx
+plt.figure(figsize=(8, 5)); plt.contourf(xx, yy, Z, levels=[-10, 0, 10], colors=["#3498db", "#e74c3c"], alpha=0.18)
+plt.contour(xx, yy, Z, levels=[-0.5, 0, 0.5], colors="k", linestyles=["--", "-", "--"], linewidths=[1.5, 2.5, 1.5])
+plt.scatter(X_2d[y_energy==0,0], X_2d[y_energy==0,1], c="#2980b9", label="Non-Energy (0)", edgecolors="k"); plt.scatter(X_2d[y_energy==1,0], X_2d[y_energy==1,1], c="#c0392b", label="Energy (1)", edgecolors="k"); plt.legend(); plt.title("SVM Decision Boundary (Garis Tegas) & Margin (Putus-putus) - Topik Energy"); plt.tight_layout(); plt.savefig(PROJECT_ROOT / "data" / "processed" / "chart_02_svm_decision_boundary.png", dpi=150); plt.close()
+
 #OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 # 6 Joblib
 #OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-# import joblib
+import joblib
 
-# sub_vec = TfidfVectorizer(analyzer=extract_subwords, sublinear_tf=True, min_df=2, max_features=12000).fit(corpus)
-# X_sub = sub_vec.transform(corpus)
-# svd, norm = TruncatedSVD(n_components=100, random_state=42).fit(X_sub), Normalizer()
-# clf_final = OneVsRestClassifier(LinearSVC(C=0.6, class_weight="balanced", random_state=42)).fit(np.hstack([norm.fit_transform(svd.transform(X_sub)), X_sub.toarray()]), Y)
+vec_final = make_hybrid_vectorizer().fit(corpus)
+clf_final = OneVsRestClassifier(LinearSVC(C=0.6, class_weight="balanced", random_state=42)).fit(vec_final.transform(corpus), Y)
+MODEL_PATH = PROJECT_ROOT / "models" / "jtkl_model_v1.joblib"
+joblib.dump({"vec": vec_final, "clf": clf_final, "labels": LABEL_COLS}, MODEL_PATH)
+
+sample_clean = " ".join(STEM_CACHE.get(w, w) for w in clean_text("Comparative Gasification Performance of Cassava Stems Bagasse and Sengon Sawdust").split())
+pred = clf_final.predict(vec_final.transform([sample_clean]))[0]
+print(f"\nTest hasil prediksi artikel ({sample_clean}):", [LABEL_COLS[i] for i, val in enumerate(pred) if val == 1])

@@ -11,27 +11,26 @@ No | Kolom Label                | Nama Aim & Scope Resmi                       |
  2 | label_waste_treatment      | Waste treatment                              |     44 |      28.8%
  3 | label_unit_operation       | Unit operation                               |     64 |      41.8%
  4 | label_thermodynamic        | Thermodynamic                                |     21 |      13.7%
- 5 | label_process_simulation   | Process simulation                           |     26 |      17.0%
+ 5 | label_process_simulation   | Process simulation                           |     23 |      15.0%
  6 | label_new_material         | Development and application of new material  |     59 |      38.6%
- 7 | label_chemical_reaction    | Chemical engineering reaction                |     56 |      36.6%
+ 7 | label_chemical_reaction    | Chemical engineering reaction                |     49 |      32.0%
  8 | label_biochemical          | Biochemical                                  |     44 |      28.8%
  9 | label_biomass              | Biomass                                      |     83 |      54.2%
 ----------------------------------------------------------------------------------------------------
 
 --- 2. DISTRIBUSI JUMLAH LABEL PER ARTIKEL (MULTIPLICITY) ---
-  - 1 Label sekaligus :  15 artikel (  9.8%)
+  - 1 Label sekaligus :  16 artikel ( 10.5%)
   - 2 Label sekaligus :  41 artikel ( 26.8%)
-  - 3 Label sekaligus :  50 artikel ( 32.7%)
-  - 4 Label sekaligus :  32 artikel ( 20.9%)
-  - 5 Label sekaligus :  14 artikel (  9.2%)
-  - 7 Label sekaligus :   1 artikel (  0.7%)
+  - 3 Label sekaligus :  51 artikel ( 33.3%)
+  - 4 Label sekaligus :  34 artikel ( 22.2%)
+  - 5 Label sekaligus :  11 artikel (  7.2%)
 
 --- 3. METRIK KOMPLEKSITAS DATASET MULTI-LABEL ---
   * Jumlah Dokumen (N)       : 153
   * Jumlah Kelas Label (L)   : 9
-  * Label Cardinality (LC)   : 2.954 (rata-rata topik per artikel)
-  * Label Density (LD)       : 0.328 (32.8%)
-  * Unique Labelsets         : 91 kombinasi unik
+  * Label Cardinality (LC)   : 2.889 (rata-rata topik per artikel)
+  * Label Density (LD)       : 0.321 (32.1%)
+  * Unique Labelsets         : 88 kombinasi unik
 
 --- 4. CONTOH 10 ARTIKEL PERTAMA BESERTA HASIL PELABELAN MULTI-HOT ---
 [01] (ID: 9861) Sustainable Biohydrogen Production from Animal Manure: Review into Processes Optimization, Pretreatment Strategies, and Feedstocks Evaluation
@@ -68,7 +67,7 @@ No | Kolom Label                | Nama Aim & Scope Resmi                       |
 
 [09] (ID: 9227) Enhanced Removal of Copper from Synthetic Wastewater Using a Water Hyacinth-Based Activated Carbon and Chitosan Composite Adsorbent
      Keywords : adsorption; chitosan; composite; Cu removal; water hyacinth
-     Labels (7): Waste treatment; Unit operation; Thermodynamic; Process simulation; Development and application of new material; Chemical engineering reaction; Biomass
+     Labels (5): Waste treatment; Unit operation; Thermodynamic; Development and application of new material; Biomass
 
 [10] (ID: 10225) A Study of the Effect of Additive Concentration in B40 Biodiesel on the Performance of the Air Preheater in a Steam-Powered Electric Power Plant
      Keywords : 2-ethylhexyl nitrate; additive; air preheater; B40 biodiesel; coal-fired power plant; combustion emissions; particles
