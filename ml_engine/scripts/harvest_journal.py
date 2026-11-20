@@ -14,7 +14,7 @@ Fitur Utama:
    - Mode 'archive' (Default): Deep HTML Scraping bertingkat (Archive -> Semua Volume -> Semua Artikel).
    - Mode 'oai'              : Protokol resmi OAI-PMH (oai_dc + resumptionToken).
 
-Cara Pakai di Terminal (dari folder D:\Skripsi_Polinema\ml_engine):
+Cara Pakai :
   .\venv\Scripts\python.exe scripts\harvest_journal.py --journal jtkl --mode archive
   .\venv\Scripts\python.exe scripts\harvest_journal.py --journal jtkl --mode oai
   .\venv\Scripts\python.exe scripts\harvest_journal.py --list

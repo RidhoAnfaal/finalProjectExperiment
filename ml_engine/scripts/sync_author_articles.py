@@ -1,3 +1,8 @@
+"""
+Script di sini berfungsi untuk mensinkronasi data author article OJS dengan data author SINTA
+
+"""
+
 from pandas.core.reshape import encoding
 from matplotlib.pyplot import clf
 from pathlib import Path

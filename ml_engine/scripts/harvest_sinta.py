@@ -1,3 +1,15 @@
+"""
+Script di sini berfungsi untuk mendapatkan data dosen/researcher Polinema dari SINTA, metadata yang diambil :
+- sinta_id: ID unik dosen/researcher di SINTA
+- name: Nama dosen/researcher
+- dept: Departemen dosen/researcher
+- scopus_h_index: Scopus H-Index dosen/researcher
+- gs_h_index: Google Scholar H-Index dosen/researcher
+- sinta_score_3yr: SINTA Score 3 tahun terakhir
+- sinta_score_overall: SINTA Score keseluruhan
+
+"""
+
 from matplotlib.markers import CARETDOWN
 from sklearn.utils.extmath import cartesian
 from scipy.stats import false_discovery_control
